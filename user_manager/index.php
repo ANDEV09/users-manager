@@ -1,7 +1,16 @@
 <?php 
 session_start();
 
+// require file PHPMailer
+require 'config/phpmailer/Exception.php';
+require 'config/phpmailer/PHPMailer.php';
+require 'config/phpmailer/SMTP.php';
+
 require_once 'config.php';
+require_once 'config/connect.php';
+require_once 'config/functions.php';
+require_once 'config/database.php';
+require_once 'config/session.php';
 
 $module = _MODULE_DEFAULT;
 $action = _ACTION_DEFAULT;

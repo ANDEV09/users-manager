@@ -1,11 +1,19 @@
 <?php
 if(!defined('_INCODE')) die('Access deniced....');
+
 require_once 'modules/users/headerlog.php';
 require_once 'modules/users/footerlog.php';
+
+$body = getBody();
+
+echo '<pre>';
+print_r($body);
+echo '</pre>';
+
 ?>
 <div class="login">
     <h2 class="login__title">Đăng Nhập Hệ Thống</h2>
-    <form class="login__form" action="/login" method="POST">
+    <form class="login__form" action="" method="POST">
         <div class="login__field">
             <label class="login__label" for="email">Email</label>
             <input class="login__input" type="email" id="email" name="email" placeholder="Nhập email" required>
@@ -24,3 +32,4 @@ require_once 'modules/users/footerlog.php';
         </div>
     </form>
 </div>
+
