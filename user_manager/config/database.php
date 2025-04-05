@@ -14,16 +14,18 @@ function query($sql, $data=[], $statementStatus=false){
             $query = $statement->execute($data);
         }
 
+        if ($statementStatus && $query){
+            return $statement;
+        }
+
+        return $query;
+
     }catch (Exception $exception){
-        echo $exception->getMessage().'<br/>';
-        echo 'File: '.$exception->getFile().' - Line: '.$exception->getLine();
+        // Log lỗi thay vì hiển thị trực tiếp
+        error_log($exception->getMessage());
+        error_log('File: '.$exception->getFile().' - Line: '.$exception->getLine());
+        return false;
     }
-
-    if ($statementStatus && $query){
-        return $statement;
-    }
-
-    return $query;
 }
 
 function insert($table, $dataInsert){
@@ -38,21 +40,34 @@ function insert($table, $dataInsert){
 }
 
 function update($table, $dataUpdate, $condition=''){
+    $updateStr = '';
+    $params = [];
+    
+    // Xử lý phần SET
+    foreach ($dataUpdate as $key=>$value){
+        $updateStr .= $key.'=:'.$key.', ';
+        $params[':'.$key] = $value;
+    }
+    $updateStr = rtrim($updateStr, ', ');
 
-   $updateStr = '';
-   foreach ($dataUpdate as $key=>$value){
-        $updateStr.=$key.'=:'.$key.', ';
-   }
+    // Xử lý phần WHERE
+    if (!empty($condition)){
+        if(is_array($condition)){
+            $whereStr = '';
+            foreach($condition as $key => $value){
+                $whereStr .= $key.'=:where_'.$key.' AND ';
+                $params[':where_'.$key] = $value;
+            }
+            $whereStr = rtrim($whereStr, ' AND ');
+            $sql = 'UPDATE '.$table.' SET '.$updateStr.' WHERE '.$whereStr;
+        } else {
+            $sql = 'UPDATE '.$table.' SET '.$updateStr.' WHERE '.$condition;
+        }
+    } else {
+        $sql = 'UPDATE '.$table.' SET '.$updateStr;
+    }
 
-   $updateStr = rtrim($updateStr, ', ');
-
-   if (!empty($condition)){
-       $sql = 'UPDATE '.$table.' SET '.$updateStr.' WHERE '.$condition;
-   }else{
-       $sql = 'UPDATE '.$table.' SET '.$updateStr;
-   }
-
-   return query($sql, $dataUpdate);
+    return query($sql, $params);
 }
 
 function delete($stable, $condition=''){

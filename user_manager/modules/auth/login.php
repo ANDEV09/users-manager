@@ -4,13 +4,17 @@ if(!defined('_INCODE')) die('Access deniced....');
 require_once 'modules/users/headerlog.php';
 require_once 'modules/users/footerlog.php';
 
-
+$msg = getFlashData('msg');
+$msgType = getFlashData('msg_type');
 
 ?>
 <div class="login">
     <form class="form">
      <div class="form-title"><span>Đăng Nhập Hệ Thống</span></div>
       <div class="title-2"><span>AN DEV</span></div>
+      <?php if(!empty($msg)):  ?>
+      <div class="alert alert-<?php echo $msgType; ?>"><?php echo $msg; ?></div>
+      <?php endif; ?>
       <div class="input-container">
         <input class="input-mail" type="email" id="email" name="email" placeholder="Enter email">
         <span> </span>

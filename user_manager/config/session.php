@@ -46,7 +46,7 @@ function setFlashData($key, $value){
 // hàm đọc flash data
 function getFlashData($key){
     $key = 'flash_'.$key;
-    $data = $getSession($key);
+    $data = getSession($key);
 
     removeSession($key);
 

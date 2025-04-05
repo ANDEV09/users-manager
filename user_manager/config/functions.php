@@ -17,7 +17,7 @@ $mail = new PHPMailer(true);
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'lamhoangan612@gmail.com';                     //SMTP username
-        $mail->Password   = 'dqeh pfnk epai emdw';                               //SMTP password
+        $mail->Password   = 'mjja jsde utut mtny';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -26,14 +26,15 @@ $mail = new PHPMailer(true);
         $mail->addAddress($to);     //Add a recipient      
 
         //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->isHTML(true);   
+        $mail->CharSet = 'UTF-8';                               //Set email format to HTML
         $mail->Subject = $subject;
         $mail->Body    = $content;
 
         $mail->send();
-        echo 'Message has been sent';
+        return true;
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return false;
     }
 }
 
@@ -53,9 +54,9 @@ function isGet(){
 
 function getBody(){
     $bodyArr = [];
-   if(isGet()){
+    if(isGet()){
         if(!empty($_GET)){
-            foreach($_POST as $key => $value){
+            foreach($_GET as $key => $value){
                 $key = trim(strip_tags($key));
                 if(is_array($value)){
                     $bodyArr[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
@@ -64,9 +65,9 @@ function getBody(){
                 }
             }
         }  
-   }
+    }
 
-   if(isPost()){
+    if(isPost()){
         if(!empty($_POST)){
             foreach($_POST as $key => $value){
                 if(is_array($value)){
@@ -90,6 +91,49 @@ function isNumberInt($int){
     $check = filter_var($int, FILTER_VALIDATE_INT);
     return $check;
 }
+function isPhone($phone) {
+    $phone = trim($phone);
+    if (!preg_match('/^0[0-9]{9}$/', $phone)) {
+        return false;
+    }
+    return true;
+}
 
+// hàm thông báo
+function showMsg($msg, $type='success'){
+    if(!empty($msg)){
+        echo '<div class="alert alert-'.$type.'">'.$msg.'</div>';
+    }
+}
 
+// hàm chuyển hướng
+function redirect($url=''){
+    if(!empty($url)){
+        header('Location: '.$url);
+        exit();
+    }
+}
+
+    
+
+// hàm thông báo thành công
+function showSuccessMsg($url=''){
+    if(!empty($url)){
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                title: "Thành công!",
+                text: "Đăng ký tài khoản thành công!",
+                icon: "success",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#3085d6",
+                timer: 2000,
+                timerProgressBar: true
+            }).then((result) => {
+                window.location.href = "'.$url.'";
+            });
+        </script>';
+        exit();
+    }
+}
 
