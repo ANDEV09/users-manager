@@ -9,3 +9,4 @@ const _INCODE = true; // ngăn chặn hành vi truy cập trực tiếp vào cá
 define('_WEB_HOST_ROOT', 'http://'.$_SERVER['HTTP_HOST'].'/PHP%20LEARNING/Project01/user_manager'); // Địa chỉ trang chủ
 
 define('_WEB_HOST_TEMPLATE', _WEB_HOST_ROOT.'/assets');
+define('_WEB_HOST_TEMPLATE_ROOT', _WEB_HOST_ROOT.'/templates');
