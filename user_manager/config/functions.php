@@ -115,7 +115,6 @@ function redirect($url=''){
 }
 
     
-
 // hàm thông báo thành công
 function showSuccessMsg($url=''){
     if(!empty($url)){
@@ -137,3 +136,17 @@ function showSuccessMsg($url=''){
     }
 }
 
+// hàm kiểm tra trạng thái đăng nhập
+function isLogin(){
+    $checkLogin = false;
+    // kiểm tra trạng thái đăng nhập
+    if(getSession('loginToken')){
+        $tokenLogin = getSession('loginToken');
+        $checkToken = firstRaw("SELECT userId FROM login_token WHERE token = '$tokenLogin'");
+        if(!empty($checkToken)){
+            $checkLogin = true;
+        }else{
+            removeSession('loginToken');
+        }
+    } return $checkLogin;
+}
